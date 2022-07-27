@@ -83,7 +83,11 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Post $post)
-    {
+    {   
+        if($post->user_id !== Auth::id()) {
+            abort(403);
+        }
+
         return view('admin.posts.show', compact('post'));
     }
 
@@ -94,7 +98,11 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(Post $post)
-    {
+    {   
+        if($post->user_id !== Auth::id()) {
+            abort(403);
+        }
+
         $categories = Category::all();
         $tags = Tag::all();
         $postTags = $post->tags->map(function ($item){
@@ -112,7 +120,11 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Post $post)
-    {
+    {   
+        if($post->user_id !== Auth::id()) {
+            abort(403);
+        }
+
         // validazione
         $request->validate([
             'title' => 'required | string | max:255',
@@ -132,6 +144,9 @@ class PostController extends Controller
 
         $post->published = isset($post->published);
 
+        // associo utente al nuovo post
+        $post->user_id = Auth::id();
+
         $post->save();
 
         $tags = isset($data['tags']) ? $data['tags'] : [];
@@ -149,6 +164,10 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        if($post->user_id !== Auth::id()) {
+            abort(403);
+        }
+        
         $post->delete();
         // ritorno alla home 
         return redirect()->route('admin.posts.index');
