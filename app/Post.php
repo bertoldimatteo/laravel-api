@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
-    protected $guarded = ['tags'];
+    protected $guarded = ['tags', 'user_id'];
 
     public function category()
     {

@@ -19,8 +19,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::all();
         $user = Auth::user();
+        $posts = $user->posts;
 
         return view('admin.posts.index', compact('posts'));
     }
@@ -62,6 +62,10 @@ class PostController extends Controller
         $newPost->slug = $this->getSlug($data['title']);
 
         $newPost->published = isset($newPost->published);
+        
+        // associo utente al nuovo post
+        $newPost->user_id = Auth::id();
+
         $newPost->save();
 
         // se ci sono dei tag associati, li associo al post appena creato
