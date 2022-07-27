@@ -8,6 +8,7 @@ use App\Category;
 use App\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -19,6 +20,8 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::all();
+        $user = Auth::user();
+
         return view('admin.posts.index', compact('posts'));
     }
 
