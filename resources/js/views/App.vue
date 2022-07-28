@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>BoolBlog</h1>
+    <BaseHeader/>
     <ul>
       <li v-for="post in posts" :key="post.slug">
         {{post.title}}
@@ -10,7 +10,12 @@
 </template>
 
 <script>
+import BaseHeader from '../components/macro/BaseHeader.vue';
+
 export default {
+  components: { 
+    BaseHeader, 
+    },
     name: 'App',
     data() {
       return {
